@@ -9,4 +9,11 @@ include: "rules/swarm.smk"
 
 rule all:
     input:
-        expand("reads/final/{sample}.swarm_stats.tsv", sample=SAMPLES),
+        expand("reads/final/{sample}.swarm_stats_pretty.tsv", sample=SAMPLES),
+    output:
+        "data/swarm_stats.tsv",
+    shell:
+        """
+        qsv cat rowskey --group fstem --group-name sample --output {output} {input}
+        sed -i "s/\\.swarm_stats_pretty//" {output}
+        """

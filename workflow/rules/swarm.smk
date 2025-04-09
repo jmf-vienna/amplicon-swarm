@@ -2,9 +2,9 @@ rule swarm:
     input:
         "{path}.dereplicated.fna",
     output:
-        clusters="{path}.clusters.txt",
-        seeds="{path}.cluster_representatives.fna",
-        stats="{path}.swarm_stats.tsv",
+        clusters=temp("{path}.clusters.txt"),
+        seeds=temp("{path}.cluster_representatives.fna"),
+        stats=temp("{path}.swarm_stats.tsv"),
     log:
         "{path}.swarm.log",
     shell:
@@ -17,3 +17,18 @@ rule swarm:
         " --statistics-file {output.stats}"
         " --log {log}"
         " {input}"
+
+
+rule swarm_stats_pretty:
+    input:
+        "{path}.swarm_stats.tsv",
+    output:
+        temp("{path}.swarm_stats_pretty.tsv"),
+    shell:
+        """
+        if [ -s {input} ]; then
+            qsv rename uniques,total_abundance,seed,seed_abundance,singletons,iterations,cumulated_steps --no-headers --output {output} {input}
+        else
+            echo "uniques\ttotal_abundance\tseed\tseed_abundance\tsingletons\titerations\tcumulated_steps" > {output}
+        fi
+        """
