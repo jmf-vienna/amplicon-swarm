@@ -10,6 +10,7 @@
         "sizeout",
         "snakefmt",
         "snakemake",
+        "usearch",
         "vsearch"
     ]
 }

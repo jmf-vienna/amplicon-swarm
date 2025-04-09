@@ -1,6 +1,7 @@
 include: "rules/common.smk"
 include: "rules/convert.smk"
 include: "rules/derep.smk"
+include: "rules/swarm.smk"
 
 
 (SAMPLES,) = glob_wildcards("reads/final/{sample}.fastq")
@@ -8,4 +9,4 @@ include: "rules/derep.smk"
 
 rule all:
     input:
-        expand("reads/final/{sample}.dereplicated.fna", sample=SAMPLES),
+        expand("reads/final/{sample}.cluster_representatives.fna", sample=SAMPLES),
