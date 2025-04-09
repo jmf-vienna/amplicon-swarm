@@ -9,4 +9,4 @@ include: "rules/swarm.smk"
 
 rule all:
     input:
-        expand("reads/final/{sample}.cluster_representatives.fna", sample=SAMPLES),
+        expand("reads/final/{sample}.swarm_stats.tsv", sample=SAMPLES),

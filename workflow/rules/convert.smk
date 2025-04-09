@@ -1,8 +1,8 @@
 rule convert_fastq_to_fasta:
     input:
-        "{name}.fastq",
+        "{path}.fastq",
     output:
-        "{name}.fna",
+        temp("{path}.fna"),
     shell:
         """
         seqkit fq2fa --threads {threads} {input} > {output}

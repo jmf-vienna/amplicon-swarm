@@ -2,7 +2,7 @@ rule dereplicate_reads:
     input:
         "{path}.fna",
     output:
-        "{path}.dereplicated.fna",
+        temp("{path}.dereplicated.fna"),
     log:
         "{path}.vsearch_derep.log",
     shell:
