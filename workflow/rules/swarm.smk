@@ -1,12 +1,17 @@
 rule swarm:
     input:
-        "{name}.dereplicated.fna",
+        "{path}.dereplicated.fna",
     output:
-        "{name}.cluster_representatives.fna",
+        clusters="{path}.clusters.txt",
+        seeds="{path}.cluster_representatives.fna",
+    log:
+        "{path}.swarm.log",
     shell:
         "swarm"
         " --threads {threads}"
         " --fastidious"
         " --usearch-abundance"
-        " --seeds {output}"
+        " --output {output.clusters}"
+        " --seeds {output.seeds}"
+        " --log {log}"
         " {input}"
