@@ -4,6 +4,7 @@ rule swarm:
     output:
         clusters="{path}.clusters.txt",
         seeds="{path}.cluster_representatives.fna",
+        stats="{path}.swarm_stats.tsv",
     log:
         "{path}.swarm.log",
     shell:
@@ -13,5 +14,6 @@ rule swarm:
         " --usearch-abundance"
         " --output {output.clusters}"
         " --seeds {output.seeds}"
+        " --statistics-file {output.stats}"
         " --log {log}"
         " {input}"
