@@ -1,8 +1,10 @@
 rule dereplicate_reads:
     input:
-        "{name}.fna",
+        "{path}.fna",
     output:
-        "{name}.dereplicated.fna",
+        "{path}.dereplicated.fna",
+    log:
+        "{path}.vsearch_derep.log",
     shell:
         "vsearch"
         " --threads {threads}"
@@ -11,3 +13,4 @@ rule dereplicate_reads:
         " --relabel_sha1"
         " --fasta_width 0"
         " --output {output}"
+        " 2> {log}"
