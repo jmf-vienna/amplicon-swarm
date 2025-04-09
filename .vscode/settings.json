@@ -3,6 +3,7 @@
         "fasta",
         "fastq",
         "seqkit",
+        "snakefmt",
         "snakemake"
     ]
 }
