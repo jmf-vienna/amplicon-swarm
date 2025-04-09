@@ -1,9 +1,15 @@
 {
     "cSpell.words": [
+        "derep",
+        "dereplicate",
+        "dereplicated",
         "fasta",
         "fastq",
+        "fulllength",
         "seqkit",
+        "sizeout",
         "snakefmt",
-        "snakemake"
+        "snakemake",
+        "vsearch"
     ]
 }
