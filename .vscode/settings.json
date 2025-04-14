@@ -7,6 +7,7 @@
         "fastq",
         "fstem",
         "fulllength",
+        "rmdup",
         "rowskey",
         "seqkit",
         "sizeout",

@@ -9,6 +9,12 @@ include: "rules/swarm.smk"
 
 rule all:
     input:
+        "data/swarm_stats.tsv",
+        "data/swarm_cluster_representatives.fna",
+
+
+rule stats:
+    input:
         expand("reads/final/{sample}.swarm_stats_pretty.tsv", sample=SAMPLES),
     output:
         "data/swarm_stats.tsv",
@@ -17,3 +23,15 @@ rule all:
         qsv cat rowskey --group fstem --group-name sample --output {output} {input}
         sed -i "s/\\.swarm_stats_pretty//" {output}
         """
+
+
+rule representatives:
+    input:
+        expand("reads/final/{sample}.cluster_representatives.fna", sample=SAMPLES),
+    output:
+        "data/swarm_cluster_representatives.fna",
+    shell:
+        "seqkit rmdup --quiet --by-seq {input}"
+        " | seqkit replace --pattern ';.+' --replacement ''"
+        " | seqkit sort --quiet --line-width 0"
+        " > {output}"
