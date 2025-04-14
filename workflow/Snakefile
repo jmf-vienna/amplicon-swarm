@@ -9,8 +9,8 @@ include: "rules/swarm.smk"
 
 rule all:
     input:
-        "data/swarm_stats.tsv",
-        "data/swarm_cluster_representatives.fna",
+        "data/swarm_stats_without_singletons.tsv",
+        "data/swarm_cluster_representatives_without_singletons.fna",
 
 
 rule stats:
@@ -25,6 +25,28 @@ rule stats:
         """
 
 
+rule swarm_stats_without_singletons:
+    input:
+        "data/swarm_stats.tsv",
+    output:
+        "data/swarm_stats_without_singletons.tsv",
+    shell:
+        """
+        qsv search --invert-match --select total_abundance "^1$" --output {output} {input}
+        """
+
+
+rule swarm_stats_without_singletons_ids:
+    input:
+        "data/swarm_stats_without_singletons.tsv",
+    output:
+        temp("data/swarm_non_singletons.tsv"),
+    shell:
+        """
+        qsv select seed {input} | qsv sort --unique | qsv behead --output {output}
+        """
+
+
 rule representatives:
     input:
         expand("reads/final/{sample}.cluster_representatives.fna", sample=SAMPLES),
@@ -35,3 +57,14 @@ rule representatives:
         " | seqkit replace --pattern ';.+' --replacement ''"
         " | seqkit sort --quiet --line-width 0"
         " > {output}"
+
+
+rule swarm_cluster_representatives_without_singletons:
+    input:
+        fasta="data/swarm_cluster_representatives.fna",
+        ids="data/swarm_non_singletons.tsv",
+    output:
+        fasta="data/swarm_cluster_representatives_without_singletons.fna",
+        index=temp("data/swarm_cluster_representatives_without_singletons.fna.fai"),
+    shell:
+        "seqkit faidx --quiet --line-width 0 --infile-list {input.ids} {input.fasta} > {output}"
