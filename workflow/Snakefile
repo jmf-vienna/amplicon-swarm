@@ -11,6 +11,7 @@ rule all:
     input:
         "data/swarm_stats_without_singletons.tsv",
         "data/swarm_cluster_representatives_without_singletons.fna",
+        "data/swarm_metrics.tsv",
 
 
 rule stats:
@@ -68,3 +69,24 @@ rule swarm_cluster_representatives_without_singletons:
         index=temp("data/swarm_cluster_representatives.fna.fai"),
     shell:
         "seqkit faidx --quiet --line-width 0 --infile-list {input.ids} {input.fasta} > {output.fasta}"
+
+
+rule metrics:
+    input:
+        "data/swarm_stats.tsv",
+    output:
+        "data/swarm_metrics.tsv",
+    shell:
+        """
+        R --slave -e '
+            readr::read_tsv("{input}", show_col_types = FALSE) |>
+            dplyr::group_by(sample) |>
+            dplyr::summarise(count = sum(total_abundance)) |>
+            tibble::add_column(
+                tool = "swarm/JMF-flavor",
+                phase = "with singletons",
+                .before = 1L
+            ) |>
+            readr::write_tsv("{output}")
+        '
+        """
