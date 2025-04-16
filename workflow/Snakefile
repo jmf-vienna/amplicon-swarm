@@ -65,6 +65,6 @@ rule swarm_cluster_representatives_without_singletons:
         ids="data/swarm_non_singletons.tsv",
     output:
         fasta="data/swarm_cluster_representatives_without_singletons.fna",
-        index=temp("data/swarm_cluster_representatives_without_singletons.fna.fai"),
+        index=temp("data/swarm_cluster_representatives.fna.fai"),
     shell:
-        "seqkit faidx --quiet --line-width 0 --infile-list {input.ids} {input.fasta} > {output}"
+        "seqkit faidx --quiet --line-width 0 --infile-list {input.ids} {input.fasta} > {output.fasta}"
