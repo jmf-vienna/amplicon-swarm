@@ -27,8 +27,8 @@ rule swarm_stats_pretty:
     shell:
         """
         if [ -s {input} ]; then
-            qsv rename uniques,total_abundance,seed,seed_abundance,singletons,iterations,cumulated_steps --no-headers --output {output} {input}
+            qsv rename uniques,count,feature,seed_abundance,singletons,iterations,cumulated_steps --no-headers --output {output} {input}
         else
-            echo "uniques\ttotal_abundance\tseed\tseed_abundance\tsingletons\titerations\tcumulated_steps" > {output}
+            echo "uniques\tcount\tfeature\tseed_abundance\tsingletons\titerations\tcumulated_steps" > {output}
         fi
         """

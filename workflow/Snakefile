@@ -33,7 +33,7 @@ rule swarm_stats_without_singletons:
         "data/swarm_stats_without_singletons.tsv",
     shell:
         """
-        qsv search --invert-match --select total_abundance "^1$" --output {output} {input}
+        qsv search --invert-match --select count "^1$" --output {output} {input}
         """
 
 
@@ -44,7 +44,7 @@ rule swarm_stats_without_singletons_ids:
         temp("data/swarm_non_singletons.tsv"),
     shell:
         """
-        qsv select seed {input} | qsv sort --unique | qsv behead --output {output}
+        qsv select feature {input} | qsv sort --unique | qsv behead --output {output}
         """
 
 
@@ -81,7 +81,7 @@ rule metrics:
         R --slave -e '
             readr::read_tsv("{input}", show_col_types = FALSE) |>
             dplyr::group_by(sample) |>
-            dplyr::summarise(count = sum(total_abundance)) |>
+            dplyr::summarise(count = sum(count)) |>
             tibble::add_column(
                 tool = "swarm/JMF-flavor",
                 phase = "with singletons",
