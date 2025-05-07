@@ -3,6 +3,8 @@ rule convert_fastq_to_fasta:
         "{path}.fastq",
     output:
         temp("{path}.fna"),
+    log:
+        "{path}.convert_fastq_to_fasta.log",
     shell:
         "vsearch"
         " --threads {threads}"
@@ -11,3 +13,4 @@ rule convert_fastq_to_fasta:
         " --relabel_sha1"
         " --fastq_filter {input}"
         " --fastaout {output}"
+        " 2> {log}"
