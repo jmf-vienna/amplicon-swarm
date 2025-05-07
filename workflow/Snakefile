@@ -13,6 +13,7 @@ rule all:
         "data/swarm_cluster_representatives_without_singletons.fna",
         "data/swarm_metrics.tsv",
         "data/swarm_expected_errors.tsv",
+        "data/swarm_cluster_members.tsv",
 
 
 rule stats:
@@ -102,4 +103,22 @@ rule expected_errors:
         """
         echo "sha1\tsample\texpected_errors\tlength" > {output}
         cat {input} | grep '^>' | tr ';' '\\t' | sed -e 's/^>//' -e 's/[a-z]\\+=//g' >> {output}
+        """
+
+
+rule cluster_members:
+    input:
+        expand("reads/final/{sample}.clusters.txt", sample=SAMPLES),
+    output:
+        "data/swarm_cluster_members.tsv",
+    shell:
+        """
+        echo "sample\tseed\tmembers" > {output}
+        awk 'BEGIN {{ OFS="\\t" }} {{ print FILENAME , $0 }}' {input} >> {output}
+        sed -i \
+            -e "s/^reads\\/final\\///" \
+            -e "s/\\.clusters\\.txt//" \
+            -e "s/;size=[0-9]\\+\\( \\|$\\)/\\t/" \
+            -e "s/;size=[0-9]\\+//g" \
+            {output}
         """
