@@ -11,6 +11,7 @@ rule convert_fastq_to_fasta:
         " --fasta_width 0"
         " --fastq_qmax 50"
         " --relabel_sha1"
+        " --eeout"
         " --fastq_filter {input}"
         " --fastaout {output}"
         " 2> {log}"

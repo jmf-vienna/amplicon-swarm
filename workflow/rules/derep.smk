@@ -9,6 +9,7 @@ rule dereplicate_reads:
         "vsearch"
         " --threads {threads}"
         " --derep_fulllength {input}"
+        " --xee"
         " --sizeout"
         " --fasta_width 0"
         " --output {output}"
