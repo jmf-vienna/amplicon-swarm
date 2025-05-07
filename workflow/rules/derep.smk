@@ -10,7 +10,6 @@ rule dereplicate_reads:
         " --threads {threads}"
         " --derep_fulllength {input}"
         " --sizeout"
-        " --relabel_sha1"
         " --fasta_width 0"
         " --output {output}"
         " 2> {log}"

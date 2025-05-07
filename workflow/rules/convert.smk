@@ -8,5 +8,6 @@ rule convert_fastq_to_fasta:
         " --threads {threads}"
         " --fasta_width 0"
         " --fastq_qmax 50"
+        " --relabel_sha1"
         " --fastq_filter {input}"
         " --fastaout {output}"
