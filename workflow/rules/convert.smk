@@ -4,6 +4,9 @@ rule convert_fastq_to_fasta:
     output:
         temp("{path}.fna"),
     shell:
-        """
-        seqkit fq2fa --threads {threads} {input} > {output}
-        """
+        "vsearch"
+        " --threads {threads}"
+        " --fasta_width 0"
+        " --fastq_qmax 50"
+        " --fastq_filter {input}"
+        " --fastaout {output}"
