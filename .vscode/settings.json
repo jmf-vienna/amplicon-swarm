@@ -12,6 +12,7 @@
         "fstem",
         "fulllength",
         "infile",
+        "lengthout",
         "qmax",
         "readr",
         "rmdup",
