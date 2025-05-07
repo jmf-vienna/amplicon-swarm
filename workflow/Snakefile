@@ -12,6 +12,7 @@ rule all:
         "data/swarm_stats_without_singletons.tsv",
         "data/swarm_cluster_representatives_without_singletons.fna",
         "data/swarm_metrics.tsv",
+        "data/swarm_expected_errors.tsv",
 
 
 rule stats:
@@ -89,4 +90,16 @@ rule metrics:
             ) |>
             readr::write_tsv("{output}")
         '
+        """
+
+
+rule expected_errors:
+    input:
+        expand("reads/final/{sample}.fna", sample=SAMPLES),
+    output:
+        "data/swarm_expected_errors.tsv",
+    shell:
+        """
+        echo "sha1\tsample\texpected_errors\tlength" > {output}
+        cat {input} | grep '^>' | tr ';' '\\t' | sed -e 's/^>//' -e 's/[a-z]\\+=//g' >> {output}
         """
