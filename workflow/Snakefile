@@ -9,13 +9,25 @@ include: "rules/swarm.smk"
 
 rule all:
     input:
+        "data/reads.tsv",
         "data/pooled_swarm_stats.tsv",
         "data/pooled_swarm_cluster_members.tsv",
         "data/swarm_stats_without_singletons.tsv",
         "data/swarm_cluster_representatives_without_singletons.fna",
         "data/swarm_metrics.tsv",
-        "data/swarm_expected_errors.tsv",
         "data/swarm_cluster_members.tsv",
+
+
+rule fasta_header_to_tsv:
+    input:
+        expand("reads/final/{sample}.fna", sample=SAMPLES),
+    output:
+        "data/reads.tsv",
+    shell:
+        """
+        echo "sha1\tsample\texpected_errors\tlength" > {output}
+        cat {input} | grep '^>' | tr ';' '\\t' | sed -e 's/^>//' -e 's/[a-z]\\+=//g' >> {output}
+        """
 
 
 rule pool_fasta:
@@ -131,18 +143,6 @@ rule metrics:
             ) |>
             readr::write_tsv("{output}")
         '
-        """
-
-
-rule expected_errors:
-    input:
-        expand("reads/final/{sample}.fna", sample=SAMPLES),
-    output:
-        "data/swarm_expected_errors.tsv",
-    shell:
-        """
-        echo "sha1\tsample\texpected_errors\tlength" > {output}
-        cat {input} | grep '^>' | tr ';' '\\t' | sed -e 's/^>//' -e 's/[a-z]\\+=//g' >> {output}
         """
 
 
