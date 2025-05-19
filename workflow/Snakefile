@@ -13,10 +13,8 @@ rule all:
         "data/sequences.tsv",
         "data/pooled_swarm_stats.tsv",
         "data/pooled_swarm_cluster_members.tsv",
-        "data/solitary_swarm_metrics.tsv",
+        "data/solitary_swarm_stats.tsv",
         "data/solitary_swarm_cluster_members.tsv",
-        "data/filtered_solitary_swarm_stats.tsv",
-        "data/filtered_solitary_swarm_cluster_representatives.fna",
 
 
 rule fasta_header_to_tsv:
