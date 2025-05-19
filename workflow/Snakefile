@@ -10,6 +10,7 @@ include: "rules/swarm.smk"
 rule all:
     input:
         "data/reads.tsv",
+        "data/sequences.tsv",
         "data/pooled_swarm_stats.tsv",
         "data/pooled_swarm_cluster_members.tsv",
         "data/solitary_swarm_metrics.tsv",
@@ -27,6 +28,18 @@ rule fasta_header_to_tsv:
         """
         echo "sha1\tsample\texpected_errors\tlength" > {output}
         cat {input} | grep '^>' | tr ';' '\\t' | sed -e 's/^>//' -e 's/[a-z]\\+=//g' >> {output}
+        """
+
+
+rule fasta_to_tsv:
+    input:
+        "reads/final/all.dereplicated.fna",
+    output:
+        "data/sequences.tsv",
+    shell:
+        """
+        echo "sha1\tsequence" > {output}
+        seqkit fx2tab --no-qual {input} | sed "s/;size=[0-9]\\+//" | sort >> {output}
         """
 
 
