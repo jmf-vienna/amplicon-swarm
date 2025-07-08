@@ -9,6 +9,7 @@ rule dereplicate_reads:
         "vsearch"
         " --threads {threads}"
         " --derep_fulllength {input}"
+        " --minseqlength 50"
         " --relabel_sha1"
         " --sizeout"
         " --fasta_width 0"
