@@ -15,6 +15,7 @@
         "fulllength",
         "infile",
         "lengthout",
+        "maxee",
         "minseqlength",
         "qmax",
         "readr",
